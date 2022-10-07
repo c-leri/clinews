@@ -13,7 +13,8 @@ authors = ["creativecoder", "celeri"]
 crossterm = "0.20.0"
 dotenv = "0.15.0"
 termimad = "0.14.2"
-newsapi = {path = "./newsapi"}
+tokio = { version = "1.11.0", features = ["full"] }
+newsapi = { path = "./newsapi", features = ["async"] }
 
 [package.metadata.rpm]
 package = "clinews"

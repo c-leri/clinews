@@ -1,17 +1,17 @@
 mod theme;
 
 use std::error::Error;
-use newsapi::{Articles, get_articles};
+use newsapi::{Article, Country, Endpoint, NewsAPI};
 use dotenv::dotenv;
 
-fn render_articles(articles: &Articles)
+fn render_articles(articles: &Vec<Article>)
 {
     let theme = theme::default();
     theme.print_text("# Top headlines\n\n");
-    for article in &articles.articles
+    for article in articles
     {
-        theme.print_text(&format!("`{}`", article.title));
-        theme.print_text(&format!("> *{}*", article.url));
+        theme.print_text(&format!("`{}`", article.title()));
+        theme.print_text(&format!("> *{}*", article.url()));
         theme.print_text("---")
     }
 }
@@ -22,11 +22,31 @@ fn main() -> Result<(), Box<dyn Error>>
 
     let api_key = std::env::var("API_KEY")?;
 
-    let url = format!("https://newsapi.org/v2/top-headlines?country=fr&apiKey={}", api_key);
+    let mut newsapi = NewsAPI::new(&api_key);
+    newsapi.endpoint(Endpoint::TopHeadlines);
+    newsapi.country(Country::FR);
 
-    let articles = get_articles(&url)?;
+    let newsapi_reponse = newsapi.fetch()?;
 
-    render_articles(&articles);
+    render_articles(&newsapi_reponse.articles());
 
     Ok(())
 }
+
+// #[tokio::main]
+// async fn main() -> Result<(), Box<dyn Error>>
+// {
+//     dotenv();
+//
+//     let api_key = std::env::var("API_KEY")?;
+//
+//     let mut newsapi = NewsAPI::new(&api_key);
+//     newsapi.endpoint(Endpoint::TopHeadlines);
+//     newsapi.country(Country::FR);
+//
+//     let newsapi_reponse = newsapi.fetch_async().await?;
+//
+//     render_articles(&newsapi_reponse.articles());
+//
+//     Ok(())
+// }
