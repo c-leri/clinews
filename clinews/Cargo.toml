@@ -1,0 +1,25 @@
+[package]
+name = "clinews"
+version = "0.1.0"
+edition = "2021"
+
+description = "A simple cli news reader app"
+license = "MIT"
+authors = ["creativecoder", "celeri"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+crossterm = "0.20.0"
+termimad = "0.14.2"
+tokio = { version = "1.11.0", features = ["full"] }
+newsapi = { path = "../newsapi" }
+
+[package.metadata.rpm]
+package = "clinews"
+
+[package.metadata.rpm.cargo]
+buildflags = ["--release"]
+
+[package.metadata.rpm.targets]
+clinews = { path = "/usr/bin/clinews" }

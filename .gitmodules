@@ -1,0 +1,3 @@
+[submodule "newsapi"]
+	path = newsapi
+	url = ssh://git@github.com/celestomm/newsapi.git
